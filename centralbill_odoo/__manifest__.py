@@ -5,17 +5,18 @@
     'version': '2.0',
     'category': 'Accounting/Payment Providers',
     'sequence': 350,
-    'summary': "An Ivorian payment provider.",
+    'summary': "An ivorian payment provider covering west african countries.",
     'depends': ['payment'],
     'data': [
         'views/centralbill_odoo_templates.xml',
         'views/payment_provider_views.xml',
-        'views/res_config_settings.xml',
-        
-        'data/payment_icon_data.xml',
+        'views/res_config_setting.xml',
+        'data/payment_method_data.xml',
         'data/payment_provider_data.xml',
     ],
-    'application': True,
+    'images': [
+        'static/description/centralbill.png',
+    ],
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
     'license': 'LGPL-3',

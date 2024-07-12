@@ -1,4 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 import hmac
 import logging
 import pprint
@@ -11,10 +12,13 @@ from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
+
 class CentralbillController(http.Controller):
     _return_url = '/payment/centralbill/return'
     _webhook_url = '/payment/centralbill/webhook'
     _redirect_url = '/'
+    _cancel_url = '/payment/centralbill/cancel'
+    _notify_url = '/payment/centralbill'
 
     @http.route(_return_url, type='http', auth='public', methods=['POST'], csrf=False, save_session=False)
     def centralbill_return_from_checkout(self, **raw_data):
@@ -30,23 +34,12 @@ class CentralbillController(http.Controller):
 
         :param dict raw_data: The un-formatted notification data
         """
-        
-        print("START CENTRAL URL")
-        
+
         event = request.get_json_data()
-        _logger.info("handling redirection from Centralbill with data:\n%s", pprint.pformat(event))
         data = self._normalize_data_keys(event)
-        
-        print("START CENTRAL URL")
-        print(data)
-        print("FINISH CENTRAL URL")
 
         # Check the integrity of the notification
         tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data('centralbill', data)
-        
-        print("CENTRAL BEGIN PAYMENT URL")
-        print(tx_sudo)
-        print("CENTRAL END PAYMENT URL")
         
         # Handle the notification data
         tx_sudo._handle_notification_data('centralbill', data)
@@ -63,27 +56,16 @@ class CentralbillController(http.Controller):
         :rtype: str
         """
         event = request.get_json_data()
-        print("BEGIN EVENT")
-        print(event)
-        print("END EVENT")
-        _logger.info("notification received from Centralbill with data:\n%s", pprint.pformat(event))
         data = self._normalize_data_keys(event)
         try:
-            print("BEGIN TRANSACTION DATA CONTROLER")
-            print(data)
-            print("END TRANSACTION DATA CONTROLER")
             
             # Check the integrity of the notification
             tx_sudo = request.env['payment.transaction'].sudo()._get_tx_from_notification_data('centralbill', data)
-            
-            print("BEGIN SIGNATURE")
-            print(tx_sudo)
-            print("END SIGNATURE")
 
             # Handle the notification data
             tx_sudo._handle_notification_data('centralbill', data)
         except ValidationError:  # Acknowledge the notification to avoid getting spammed
-            _logger.exception("unable to handle the notification data; skipping to acknowledge")
+            pass
         return ''
 
     @staticmethod
@@ -112,7 +94,6 @@ class CentralbillController(http.Controller):
         """
         # Check for the received signature
         if not received_signature:
-            _logger.warning("received notification with missing signature")
             raise Forbidden()
 
         # Compare the received signature with the expected signature computed from the data
@@ -120,5 +101,4 @@ class CentralbillController(http.Controller):
             notification_data, incoming=True
         )
         if not hmac.compare_digest(received_signature, expected_signature):
-            _logger.warning("received notification with invalid signature")
             raise Forbidden()

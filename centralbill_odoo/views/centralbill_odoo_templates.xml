@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <template id="redirect_form">
         <form t-att-action="api_url" method="get">
             <input type="hidden" name="applicationId" t-att-value="application_id"/>
@@ -18,5 +17,4 @@
             <input type="hidden" name="redirectUrl" t-att-value='redirect_url'/>
         </form>
     </template>
-
 </odoo>

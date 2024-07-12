@@ -1,27 +1,26 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import logging
-
 import datetime
-from datetime import datetime
 import logging
 import time
 import pytz
+
+from datetime import datetime
 
 from werkzeug import urls
 
 from odoo import _, api, models
 from odoo.exceptions import ValidationError
 
-from ..const import STATUS_CODES_MAPPING
-from ..controllers.main import CentralbillController
+from odoo.addons.centralbill_odoo.const import STATUS_CODES_MAPPING
+from odoo.addons.centralbill_odoo.controllers.main import CentralbillController
 
 _logger = logging.getLogger(__name__)
 
-
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
-
+    
     def _get_specific_rendering_values(self, processing_values):
         """ Override of payment to return Centralbill-specific rendering values.
 
@@ -85,14 +84,7 @@ class PaymentTransaction(models.Model):
         reference = notification_data.get('invoice')
         tx = self.search([('reference', '=', reference.get('id')), ('provider_code', '=', 'centralbill')])
         
-        print("BEGIN CONTAINED OF REFERENCE")
-        print(reference)
-        print("END CONTAINED OF REFERENCE")
-        
         if not tx:
-            print("BEGIN CONTAINED OF REFERENCE")
-            print(reference)
-            print("END CONTAINED OF REFERENCE")
             raise ValidationError("Centralbill: " + _("No transaction found matching reference %s.", reference))
         return tx
 
@@ -126,5 +118,4 @@ class PaymentTransaction(models.Model):
         elif status_code in STATUS_CODES_MAPPING['error']:
             self._set_error(_("An error occurred during processing of your payment (code %s). Please try again.", status_code))
         else:
-            _logger.warning("received data with invalid payment status (%s) for transaction with reference %s", status_code, self.reference)
             self._set_error("Centralbill: " + _("Unknown status code: %s", status_code))

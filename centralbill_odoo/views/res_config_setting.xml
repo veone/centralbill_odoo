@@ -5,11 +5,11 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('settings')]" position="inside">
-                <div id="centralbill_odoo_id" class="app_settings_block" string="Centralbill" data-string="Centralbill management" data-key="centralbill_odoo">
-                    <h2>Centralbill parameter</h2>
+            <xpath expr="//form" position="inside">
+                <app id="centralbill_odoo_id" string="Centralbill" data-string="centralbill_odoo" name="centralbill_odoo" groups="base.group_erp_manager">
+                    <h2>Centralbill</h2>
                     <div class="row mt16 o_settings_container">
-                        <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="col-12 col-lg-6 o_setting_box" style="margin-top: 20px; margin-left: 40px;">
                             <div class="o_setting_right_pane">
                                 <label for="dev_domain"></label>
                                 <br/>
@@ -17,6 +17,8 @@
                                 <div class="text-muted">Veuillez entrer l'url de Dev pour Centralbill
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" style="margin-top: 20px; margin-left: 40px;">
                             <div class="o_setting_right_pane">
                                 <label for="prod_domain"></label>
                                 <br/>
@@ -26,17 +28,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </app>
             </xpath>
-
         </field>
-    </record>
-    <record id="action_centralbill_odoo_setting" model="ir.actions.act_window">
-        <field name="name">Centralbill management</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">res.config.settings</field>
-        <field name="view_mode">form</field>
-        <field name="target">inline</field>
-        <field name="context">{'module': 'centralbill_odoo'}</field>
     </record>
 </odoo>

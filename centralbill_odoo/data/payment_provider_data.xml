@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo noupdate="1">
+<odoo noupdate="0">
+
     <record id="payment_provider_centralbill" model="payment.provider">
         <field name="name">Centralbill</field>
-        <field name="display_as">Mobile payment (propulsé par Centralbill)</field>
-        <field name="image_128"
-               type="base64"
-               file="centralbill_odoo/static/description/icon.png"/>
+        <field name="image_128" type="base64" file="centralbill_odoo/static/description/icon.png"/>
         <field name="module_id" ref="base.module_centralbill_odoo"/>
         <!-- https://www.centralbill-payments.com/products/payment-methods/ -->
-        <field name="payment_icon_ids" eval='[(6, 0, [ref("centralbill_odoo.payment_icon_centralbill")])]'/>
-    </record>
-
-    <record id="centralbill_odoo.payment_provider_centralbill" model="payment.provider">
+        <field name="payment_method_ids"
+               eval="[Command.set([
+                         ref('centralbill_odoo.payment_method_central_bill')
+                     ])]"
+        />
         <field name="code">centralbill</field>
         <field name="redirect_form_view_id" ref="redirect_form"/>
     </record>
