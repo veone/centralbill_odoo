@@ -1,0 +1,8 @@
+### Cpython-38.py ###
+__pycache__/
+__pycache__/*.cpython-38.pyc
+### Cpython-38.py ###
+models/__pycache__/*.cpython-38.pyc
+models/*__pycache__/
+wizard/*__pycache__/*.cpython-38.pyc
+wizard/*__pycache__/

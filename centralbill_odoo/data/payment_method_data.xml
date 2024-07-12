@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+
+    <!-- === PRIMARY PAYMENT METHODS === -->
+
+    <record id="payment_method_central_bill" model="payment.method">
+        <field name="name">Centralbill</field>
+        <field name="code">centralbill</field>
+        <field name="sequence">1000</field>
+        <field name="active">True</field>
+        <field name="image" type="base64" file="centralbill_odoo/static/img/centralbill.png"/>
+        <field name="support_tokenization">False</field>
+        <field name="support_express_checkout">False</field>
+        <field name="support_refund">partial</field>
+        <field name="supported_country_ids" eval="[Command.set([ref('base.ci')])]" />
+        <field name="supported_currency_ids" eval="[Command.set([ref('base.XOF')])]" />
+    </record>
+</odoo>

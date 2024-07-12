@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payment_provider_form" model="ir.ui.view">
+        <field name="name">Centralbill Provider Form</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <group name="provider_credentials" position='inside'>
+                <group invisible="code != 'centralbill'">
+                    <field name="centralbill_app_name"/>
+                    <field name="centralbill_app_key" required="code == 'centralbill' and state != 'disabled'"/>
+                    <field name="centralbill_secret_key" string="Secret Key"  required="code == 'centralbill' and state != 'disabled'" password="True"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>
