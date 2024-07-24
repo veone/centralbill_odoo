@@ -6,9 +6,11 @@
     'category': 'Accounting/Payment Providers',
     'sequence': 350,
     'summary': "An ivorian payment provider covering west african countries.",
-    'depends': ['payment'],
-    'website': 'http://www.veone.net',
     'author': 'VEONE',
+    'company': 'VEONE',
+    'maintainer': 'VEONE',
+    'website': "https://veone.net/",
+    'depends': ['payment'],
     'data': [
         'views/centralbill_odoo_templates.xml',
         'views/payment_provider_views.xml',
